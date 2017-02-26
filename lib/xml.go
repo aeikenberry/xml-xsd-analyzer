@@ -32,18 +32,22 @@ func OpenFile(path string) (string, error) {
 }
 
 func ParseXMLFile(xmlData string) (*golibxml.Document, error) {
+	fmt.Printf("Parsing xml of length %s", len(xmlData))
 	doc := golibxml.ParseDoc(xmlData)
 	if doc == nil {
 		fmt.Println("Error parsing document")
 		return nil, nil
 	}
+	fmt.Printf("Finished parsing xml with %s children", doc.ChildCount())
 	defer doc.Free()
 	return doc, nil
 }
 
 func ParseXSDFile(xsdData string, name string) (*SchemaFile, error) {
+	fmt.Printf("\n Attempting to parse %s of data length %s", name, len(xsdData))
 	schema, err := xsd.ParseSchema([]byte(xsdData))
 	if err != nil {
+		fmt.Printf("\n Unable to parse XSD: %s \n", name)
 		return nil, err
 	}
 
@@ -62,12 +66,14 @@ func GetAllSchemas(dirPath string) ([]*SchemaFile, error) {
 		name := f.Name()
 		openFile, err := OpenFile(dirPath + name)
 		if err != nil {
-			return nil, err
+			fmt.Printf("Unable to open %s - Skipping", name)
+			continue
 		}
 
 		xsd, err := ParseXSDFile(openFile, name)
 		if err != nil {
-			return nil, err
+			fmt.Printf("Unable to parse %s - Skipping", name)
+			continue
 		}
 
 		schemas = append(schemas, xsd)

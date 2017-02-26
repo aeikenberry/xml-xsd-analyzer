@@ -40,7 +40,7 @@ func (a *Analyzer) Run() error {
 		} else {
 			matchDisplay = "NO"
 		}
-		fmt.Printf("%s: %s", schema.Name, matchDisplay)
+		fmt.Printf("%s: %s \n", schema.Name, matchDisplay)
 	}
 
 	return nil

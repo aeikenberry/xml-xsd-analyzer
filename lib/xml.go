@@ -11,7 +11,7 @@ import (
 
 type SchemaFile struct {
 	schema *xsd.Schema
-	name   string
+	Name   string
 }
 
 func MatchesSchema(xml *golibxml.Document, schemaFile *SchemaFile) bool {
